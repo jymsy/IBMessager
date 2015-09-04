@@ -32,7 +32,7 @@ exports.send = function(fromUser, toUser, chattype, content, url, callback) {
     var sendMsg = new exports.model({
         from:fromUser,
         to:toUser,
-        timestamp:new Date().toString(),
+        timestamp:new Date(),
         chattype:chattype,
         content:content,
         url:url
@@ -55,7 +55,7 @@ exports.getLatestMessages = function (fromId, toId, early, late, chatType, callb
     } else {
         var con1 = {$or: [{to : toId, from : fromId}, {to : fromId, from : toId}]};
     }
-    var con2 = {timestamp: {$lte: new Date(late), $gt: new Date(early)}};
+    var con2 = {timestamp: {$lte: late, $gt: early}};
     var conditions = {$and:[con1, con2]};
     exports.model.find(conditions).sort({'timestamp':-1}).limit(20).exec(function(err,msgs){
         if (msgs.length > 0) {

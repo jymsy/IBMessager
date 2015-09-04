@@ -4,12 +4,12 @@ var message = require('../../Models/MessageModel');
 exports.sendMsg = function(req, res, next) {
     var from = req.body.from;
     var to = req.body.to;
-    var chattype = req.body.chattype;
+    var chatType = req.body.chattype;
     var content = req.body.content;
     var url = !req.body.url ? "" : req.body.url;
 
-    if (content && from && to && chattype) {
-        message.send(from, to, chattype, content, url, function(error) {
+    if (content && from && to && chatType) {
+        message.send(from, to, chatType, content, url, function(error) {
             if (error) {
                 next(error.message);
             } else {
@@ -26,17 +26,21 @@ exports.getLatestMessages = function(req, res, next) {
         to = req.body.to,
         early = req.body.early,
         late = req.body.late,
-        chattype = req.body.chattype;
+        chatType = req.body.chattype;
 
     if (!late) {
-        late = (new Date()).toString();
+        late = new Date();
+    } else {
+        late = new Date(late);
     }
     if (!early) {
-        early = (new Date('2015-01-01 01:01:01')).toString();
+        early = new Date('2015-01-01 01:01:01');
+    } else {
+        early = new Date(early);
     }
 
-    if (from && to && chattype) {
-        message.getLatestMessages(from , to, early, late, chattype, function(error, results) {
+    if (from && to && chatType) {
+        message.getLatestMessages(from , to, early, late, chatType, function(error, results) {
             if (error) {
                 next(error.message);
             } else {

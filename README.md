@@ -13,6 +13,8 @@ $ node app
 请求失败返回：
 {"error_message":"xxxxxx"}
 
+如果请求的参数是json形式的, 客户端请求接口时必须指名请求头类型 application/json
+
 * /login
 
 <pre>
@@ -23,19 +25,66 @@ $ node app
 * /sendMsg  
 
 <pre>
-{"from":"xxx","to":"xxx", "chattype" : "xxx", "content": ""}
+参数  {"from":"xxx","to":"xxx", "chattype" : "xxx", "content": "xxxx"}
+chattype: one 一对一, group: 群组
+
+返回值  {"error":0}
 </pre>
 
-/getLatestMessages  {"from":"xxx","to":"xxx", "chattype" : "xxx", "early": "xx", "late":"xx"}
+* /getLatestMessages
 
-/addFriend   {"targetID":"xxx","myID":"xx"}
+ 最多返回20条
 
-/getMyFriendsList   {"targetID":"xxx"}
+<pre>
+参数  {"from":"xxx","to":"xxx", "chattype" : "xxx", "early": "xx", "late":"xx"}
+返回值 [{"_id":"55e6641b702956781821d10c","from":"55e6641a702956781821d104","to":"55e6641a702956781821d105","chattype":"one","__v":0,"url":"",
+        "content_type":"str","content":"hello","timestamp":"2015-09-02T02:51:07.149Z"}]
+</pre>
 
-/searchFriend   {"name":"xxx"}
+* /addFriend
 
-/checkNewMessage    {"myID":"xx", "timestamp":"xxx"}
+<pre>
+参数  {"targetID":"xxx","myID":"xx"}
+返回值 {"__v":0,"fromID":"55e908421e9c24321c67f363","toID":"55e908421e9c24321c67f362","status":"waiting","_id":"55e9112f705f03411ccb1e46"}
+</pre>
 
-/getUserBriefInfo   {"userIDs":["xx","xx"]}
+* /getMyFriendsList
 
-/getUserGroups   {"uId":"xx"}
+<pre>
+参数  {"targetID":"xxx"}
+返回值 {"data":[{"name":"John","_id":"55e9112f705f03411ccb1e46","fromID":"55e908421e9c24321c67f363","toID":"55e908421e9c24321c67f362","status":"waiting","__v":0}]}
+</pre>
+
+* /searchFriend
+
+<pre>
+参数  {"name":"xxx"}
+返回值 {"data":[{"_id":"55e908421e9c24321c67f364","name":"Ray","__v":0,"createTime":"2015-09-04T02:56:02.074Z"}]}
+</pre>
+
+* /checkNewMessage
+
+<pre>
+参数  {"myID":"xx", "timestamp":"xxx"}
+返回值 {"data":["55e908421e9c24321c67f362"],"time":"2015-09-04T03:48:54.171Z"}
+</pre>
+
+* /getUserBriefInfo
+
+<pre>
+参数 {"userIDs":["xx","xx"]}
+返回值 {"data":[
+            {"_id":"55e908421e9c24321c67f362","name":"John","__v":0,"createTime":"2015-09-04T02:56:02.068Z"},
+            {"_id":"55e908421e9c24321c67f364","name":"Ray","__v":0,"createTime":"2015-09-04T02:56:02.074Z"}
+            ]}
+</pre>
+
+* /getUserGroups
+
+<pre>
+参数  {"uId":"xx"}
+返回值 {"data":[
+                {"_id":"55e908421e9c24321c67f369","name":"GroupC","description":"Group C"},
+                {"_id":"55e908421e9c24321c67f368","name":"GroupB","description":"Group B"}
+                ]}
+</pre>
