@@ -91,3 +91,23 @@ chattype: one 一对一, group: 群组
                 {"_id":"55e908421e9c24321c67f368","name":"GroupB","description":"Group B"}
                 ]}
 </pre>
+
+* /getBriefInfo
+
+<pre>
+参数 {"ids":["xx","xx"]}
+返回值 
+[{"_id":"55e6fb944d28047a33af4a34","name":"John","__v":0,"createTime":"2015-09-02T13:37:24.356Z"},
+{"_id":"55e6fb944d28047a33af4a35","name":"Evan","__v":0,"createTime":"2015-09-02T13:37:24.362Z"},
+{"_id":"55e6fb944d28047a33af4a39","name":"GroupA","description":"Group A","__v":0,"createTime":"2015-09-02T13:37:24.379Z","member":[]}]
+</pre>
+
+* /getBriefInfo
+
+<pre>
+参数 {"ids":["xx","xx"]}
+返回值 
+[{"_id":"55e6fb944d28047a33af4a34","name":"John","__v":0,"createTime":"2015-09-02T13:37:24.356Z"},
+{"_id":"55e6fb944d28047a33af4a35","name":"Evan","__v":0,"createTime":"2015-09-02T13:37:24.362Z"},
+{"_id":"55e6fb944d28047a33af4a39","name":"GroupA","description":"Group A","__v":0,"createTime":"2015-09-02T13:37:24.379Z","member":[]}]
+</pre>
