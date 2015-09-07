@@ -55,7 +55,7 @@ exports.getLatestMessages = function (fromId, toId, early, late, chatType, callb
     } else {
         var con1 = {$or: [{to : toId, from : fromId}, {to : fromId, from : toId}]};
     }
-    var con2 = {timestamp: {$lte: late, $gt: early}};
+    var con2 = {timestamp: {$lt: late, $gt: early}};
     var conditions = {$and:[con1, con2]};
     exports.model.find(conditions).sort({'timestamp':-1}).limit(20).exec(function(err,msgs){
         if (msgs.length > 0) {
@@ -75,17 +75,13 @@ exports.checkNewMessage = function(myID, timeStamp, callback) {
             callback(undefined);
         } else {
             var realData = [];
-            var hashTable = {};
             for (var i in results) {
                 var doc = results[i];
                 if (doc.to == myID) {
-                    hashTable[doc.from] = true;
+                    realData.push({id:doc.from, type:doc.chattype});
                 } else if (doc.from == myID) {
-                    hashTable[doc.to] = true;
+                    realData.push({id:doc.to, type:doc.chattype});
                 }
-            }
-            for (var key in hashTable) {
-                realData.push(key);
             }
             callback({data: realData, time: date});
         }

@@ -66,7 +66,10 @@ chattype: one 一对一, group: 群组
 
 <pre>
 参数  {"myID":"xx", "timestamp":"xxx"}
-返回值 {"data":["55e908421e9c24321c67f362"],"time":"2015-09-04T03:48:54.171Z"}
+返回值 
+{"data":[{"id":"55e6fb944d28047a33af4a35","type":"one"},
+            {"id":"55e6fb944d28047a33af4a3a","type":"group"}],
+ "time":"2015-09-04T03:48:54.171Z"}
 </pre>
 
 * /getUserBriefInfo
