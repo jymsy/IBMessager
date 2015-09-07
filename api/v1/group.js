@@ -16,3 +16,4 @@ exports.getUserGroups = function(req, res, next) {
         res.status(400).json({error_message:"Invalid parameter"});
     }
 };
+

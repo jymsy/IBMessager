@@ -61,6 +61,7 @@ exports.getUserBriefInfo = function(req, res, next) {
                 res.json({data:results});
             }
         });
+
     } else {
         res.status(400).json({error_message:"Invalid parameter"});
     }

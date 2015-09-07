@@ -10,10 +10,6 @@ var groupSchema = mongoose.Schema({
 
 exports.groupModel = mongoose.model('groups', groupSchema);
 
-exports.getGroupBriefInfo = function(groupID, callback) {
-
-};
-
 exports.getUserGroups = function (uId, callback) {
     var condition = {
             member:{
@@ -21,6 +17,14 @@ exports.getUserGroups = function (uId, callback) {
             }
         };
     exports.groupModel.find(condition,{name:1,description:1}).sort({name:-1}).exec(callback);
+};
+
+exports.getGroupBriefInfo = function (groupIDs, callback) {
+    var condition = [];
+    for (var i in groupIDs) {
+        condition[i] = {_id:groupIDs[i]};
+    }
+    exports.groupModel.find({$or:condition}).exec(callback);
 };
 
 exports.addGroup = function (group, callback) {
