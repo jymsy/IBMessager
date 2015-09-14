@@ -25,6 +25,15 @@ msgSchema.methods.send = function (callback) {
     });
 };
 
+function contains(array, obj){
+    var i = array.length;
+    while (i--) {
+        if (array[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
 
 exports.model = mongoose.model('messages', msgSchema);
 exports.send = function(fromUser, toUser, chattype, content, url, callback) {
@@ -65,9 +74,13 @@ exports.getLatestMessages = function (fromId, toId, early, late, chatType, callb
     });
 };
 
-exports.checkNewMessage = function(myID, timeStamp, callback) {
+exports.checkNewMessage = function(Ids, timeStamp, callback) {
     var date = new Date();
-    var con1 = {$or: [{to : myID}, {from : myID}]};
+    var con1 = [];
+    for (var i in Ids) {
+        con1.push({to: Ids[i]}, {from: Ids[i]});
+    }
+    con1 = {$or: con1};
     var con2 = {timestamp: {$lte: date, $gt: new Date(timeStamp)}};
     var conditions = {$and:[con1, con2]};
     exports.model.find(conditions).exec(function(err,results){
@@ -75,13 +88,17 @@ exports.checkNewMessage = function(myID, timeStamp, callback) {
             callback(undefined);
         } else {
             var realData = [];
+            var hashTable = {};
             for (var i in results) {
                 var doc = results[i];
-                if (doc.to == myID) {
-                    realData.push({id:doc.from, type:doc.chattype});
-                } else if (doc.from == myID) {
-                    realData.push({id:doc.to, type:doc.chattype});
+                if (doc.chattype == 'group' || contains(Ids, doc.from)) {
+                    hashTable[doc.to] = doc.chattype;
+                } else if (contains(Ids, doc.to)) {
+                    hashTable[doc.from] = doc.chattype;
                 }
+            }
+            for (var key in hashTable) {
+                realData.push({id:key, type:hashTable[key]});
             }
             callback({data: realData, time: date});
         }

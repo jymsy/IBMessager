@@ -19,9 +19,10 @@ module.exports = {
     ],
     messages: [
         {from:"John", to: "Evan", chattype: "one", content_type: "str", content:"hello"},
+        {from:"Lawrence", to: "Ray", chattype: "one", content_type: "str", content:"hello ray"},
         {from:"John", to: "GroupB", chattype: "group", content_type: "str",content:"hello1"},
         {from:"John", to: "GroupB", chattype: "group", content_type: "str",content:"hello2"},
-        {from:"John", to: "GroupC", chattype: "group", content_type: "str",content:"hello3"},
-        {from:"John", to: "GroupC", chattype: "group", content_type: "str",content:"hello4"}
+        {from:"Lawrence", to: "GroupC", chattype: "group", content_type: "str",content:"hello3"},
+        {from:"Lawrence", to: "GroupC", chattype: "group", content_type: "str",content:"hello4"}
     ]
 };

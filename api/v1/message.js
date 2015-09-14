@@ -1,5 +1,6 @@
 var message = require('../../Models/MessageModel');
-
+var group = require('../../Models/GroupModel');
+var async=require('async');
 
 exports.sendMsg = function(req, res, next) {
     var from = req.body.from;
@@ -57,13 +58,37 @@ exports.checkNewMessage = function(req, res, next) {
     timestamp = !timestamp ? new Date().getTime() - 3600*1000 : timestamp;
 
     if (myID) {
-        message.checkNewMessage(myID, timestamp, function(results) {
-            if (results) {
-                res.json(results);
-            } else {
+        async.waterfall([
+            function (done) {
+                group.getUserGroups(myID, function(error, results){
+                    if (error) {
+                        done(error, null);
+                    } else {
+                        done(null, results);
+                    }
+                });
+            },
+            function (groups, done) {
+                var ids =[myID];
+                groups.forEach (function(group){
+                    ids.push(group.id);
+                });
+                message.checkNewMessage(ids, timestamp, function(results) {
+                    if (results) {
+                        done(null, results);
+                    } else {
+                        done(error, null);
+                    }
+                });
+            }
+        ], function (error, result) {
+            if (error) {
                 next(error.message);
+            } else {
+                res.json(result);
             }
         });
+
     } else {
         res.status(400).json({error_message:"Invalid parameter"});
     }
